@@ -1,0 +1,103 @@
+mysql> USE EMPLOYEE;
+Database changed
+mysql> CREATE TABLE Emp(Emp_id int primary key,Emp_name varchar(20),Street_no int,City varchar(20),unique(City));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE Works(Emp_id int,Company_name varchar(20),Salary float(8),foreign key(Emp_id) references Emp(Emp_id),unique(Company_name));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE Company(Company_name varchar(20),City varchar(20),foreign key(Company_name) references Works(Company_name),foreign key(City) references Emp(City));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE Manages(Emp_id varchar(5),Manager_id varchar(5) ,foreign key(Manager_id) references Emp(Emp_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> ALTER TABLE Emp MODIFY COLUMN Emp_name varchar(20) NOT NULL;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E001', 'Amit Sharma', 123, 'Mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E002', 'Priya Patel', 456, 'Delhi');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E003', 'Raj Kumar', 789, 'Bangalore');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E004', 'Sneha Reddy', 101, 'Chennai');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E005', 'Vikram Singh', 202, 'Hyderabad');
+Query OK, 1 row affected (0.00 sec)
+
+
+mysql> SELECT * FROM Emp;
++--------+--------------+-----------+-----------+
+| Emp_id | Emp_name     | Street_no | City      |
++--------+--------------+-----------+-----------+
+| E001   | Amit Sharma  |       123 | Mumbai    |
+| E002   | Priya Patel  |       456 | Delhi     |
+| E003   | Raj Kumar    |       789 | Bangalore |
+| E004   | Sneha Reddy  |       101 | Chennai   |
+| E005   | Vikram Singh |       202 | Hyderabad |
++--------+--------------+-----------+-----------+
+5 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO Works (Emp_id, Company_name, Salary) VALUES ('E001', 'State Bank of India', 75000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Works (Emp_id, Company_name, Salary) VALUES ('E002', 'ICICI Bank', 70000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Works (Emp_id, Company_name, Salary) VALUES ('E003', 'HDFC Bank', 68000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Works (Emp_id, Company_name, Salary) VALUES ('E004', 'Axis Bank', 72000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Works (Emp_id, Company_name, Salary) VALUES ('E005', 'Indian Bank', 69000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM Works;
++--------+---------------------+--------+
+| Emp_id | Company_name        | Salary |
++--------+---------------------+--------+
+| E001   | State Bank of India |  75000 |
+| E002   | ICICI Bank          |  70000 |
+| E003   | HDFC Bank           |  68000 |
+| E004   | Axis Bank           |  72000 |
+| E005   | Indian Bank         |  69000 |
++--------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO Company (Company_name, City) VALUES ('State Bank of India', 'Mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Company (Company_name, City) VALUES ('ICICI Bank', 'Delhi');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Company (Company_name, City) VALUES ('HDFC Bank', 'Bangalore');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Company (Company_name, City) VALUES ('Axis Bank', 'Chennai');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Company (Company_name, City) VALUES ('Indian Bank', 'Hyderabad');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM Company;
++---------------------+-----------+
+| Company_name        | City      |
++---------------------+-----------+
+| State Bank of India | Mumbai    |
+| ICICI Bank          | Delhi     |
+| HDFC Bank           | Bangalore |
+| Axis Bank           | Chennai   |
+| Indian Bank         | Hyderabad |
++---------------------+-----------+
+5 rows in set (0.01 sec)
+
+
+
