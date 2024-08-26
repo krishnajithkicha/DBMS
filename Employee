@@ -1,9 +1,13 @@
-mysql> USE EMPLOYEE;
+mysql>CREATE DATABASE Employee;
+Query OK, 1 row affected (0.0111 sec)
+
+mysql> USE Employee;
 Database changed
-mysql> CREATE TABLE Emp(Emp_id int primary key,Emp_name varchar(20),Street_no int,City varchar(20),unique(City));
+
+mysql> CREATE TABLE Emp(Emp_id varchar(5) primary key,Emp_name varchar(20),Street_no int,City varchar(20),unique(City));
 Query OK, 0 rows affected (0.03 sec)
 
-mysql> CREATE TABLE Works(Emp_id int,Company_name varchar(20),Salary float(8),foreign key(Emp_id) references Emp(Emp_id),unique(Company_name));
+mysql> CREATE TABLE Works(Emp_id varchar(5),Company_name varchar(20),Salary float(8),foreign key(Emp_id) references Emp(Emp_id),unique(Company_name));
 Query OK, 0 rows affected (0.04 sec)
 
 mysql> CREATE TABLE Company(Company_name varchar(20),City varchar(20),foreign key(Company_name) references Works(Company_name),foreign key(City) references Emp(City));
@@ -99,5 +103,20 @@ mysql> SELECT * FROM Company;
 +---------------------+-----------+
 5 rows in set (0.01 sec)
 
+mysql> INSERT INTO Manages (Emp_id, Manager_id) VALUES ('E001', 'E005'),('E002', 'E004'),('E003', 'E005'),('E004', 'E001'),('E005', 'E003');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Manages;
++--------+------------+
+| Emp_id | Manager_id |
++--------+------------+
+| E001   | E005       |
+| E002   | E004       |
+| E003   | E005       |
+| E004   | E001       |
+| E005   | E003       |
++--------+------------+
+5 rows in set (0.00 sec)
 
 
