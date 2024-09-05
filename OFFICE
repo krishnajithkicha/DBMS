@@ -1,0 +1,10 @@
+mysql> CREATE DATABASE Office;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE Office;
+Database changed
+mysql> CREATE TABLE Depart(Dept_ID int primary key,Dept_Name varchar(20),Manager_ID int,Location varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+ CREATE TABLE Emp(Emp_no int primary key,Emp_name varchar(25),Job varchar(20),Salary float,Hiredate date,Commission float, Dept_no int,foreign key(Dept_no) references Depart(Dept_ID));
+Query OK, 0 rows affected (0.02 sec)
