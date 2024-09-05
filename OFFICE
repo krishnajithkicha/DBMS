@@ -6,7 +6,7 @@ Database changed
 mysql> CREATE TABLE Depart(Dept_ID int primary key,Dept_Name varchar(20),Manager_ID int,Location varchar(20));
 Query OK, 0 rows affected (0.02 sec)
 
- CREATE TABLE Emp(Emp_no int primary key,Emp_name varchar(25),Job varchar(20),Salary float,Hiredate date,Commission float, Dept_no int,foreign key(Dept_no) references Depart(Dept_ID));
+mysql> CREATE TABLE Emp(Emp_no int primary key,Emp_name varchar(25),Job varchar(20),Salary float,Hiredate date,Commission float, Dept_no int,foreign key(Dept_no) references Depart(Dept_ID));
 Query OK, 0 rows affected (0.02 sec)
 
 INSERT INTO Depart (Dept_ID, Dept_Name, Manager_ID, Location) VALUES
@@ -17,33 +17,32 @@ INSERT INTO Depart (Dept_ID, Dept_Name, Manager_ID, Location) VALUES
 Query OK, 4 rows affected (0.01 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 
-mysql> INSERT INTO Emp (Emp_no,Emp_name, Job, Salary, Hiredate, Commission, Dept_no) VALUES
-    -> (1, 'Amit Sharma', 'Software Engineer', 75000.00, '2023-01-15', 5000.00, 1),
-    -> (2, 'Priya Patel', 'HR Manager', 80000.00, '2022-03-22', 4000.00, 2),
-    -> (3, 'Ravi Kumar', 'Data Analyst', 60000.00, '2023-05-10', 3000.00, 3),
-    -> (4, 'Sneha Gupta', 'Marketing Executive', 65000.00, '2022-11-07', 3500.00, 4),
-    -> (5, 'Vikram Singh', 'Product Manager', 90000.00, '2023-08-19', 6000.00, 1),
-    -> (6, 'John Doe', 'Sales Representative', 25000.00, '1993-12-10', 2000.00, 2),
-    -> (7, 'Jane Doe', 'Stock Clerk', 18000.00, '1995-03-15', 1500.00, 3),
-    -> (8, 'Sam Patel', 'Data Analyst', 30000.00, '1994-06-25', 2500.00, 4),
-    -> (9, 'Mia Rao', 'Marketing Executive', 32000.00, '1997-08-10', 2700.00, 1),
-    -> (10, 'Anil Kapoor', 'HR Executive', 15000.00, '1994-09-19', NULL, 2);
-Query OK, 10 rows affected (0.01 sec)
+mysql>  INSERT INTO Emp (Emp_no,Emp_name, Job, Salary, Hiredate, Commission, Dept_no) VALUES
+    ->  (1, 'Amit Sharma', 'Software Engineer', 75000.00, '2023-01-15', 5000.00, 1),
+    ->  (2, 'Priya Patel', 'HR Manager', 80000.00, '2022-03-22', 4000.00, 2),
+    ->  (3, 'Ravi Kumar', 'Data Analyst', 60000.00, '2023-05-10', 3000.00, 3),
+    ->  (4, 'Sneha Gupta', 'Marketing Executive', 5000.00, '2022-11-07', 3500.00, 4),
+    ->  (5, 'Vikram Singh', 'Product Manager', 90000.00, '2023-08-19', 6000.00, 1),
+    ->  (6, 'John Doe', 'Sales Representative', 25000.00, '1993-12-10', 2000.00, 2),
+    ->  (7, 'Jane Doe', 'Stock Clerk', 18000.00, '1995-03-15', 1500.00, 3),
+    ->  (8, 'Sam Patel', 'Data Analyst', 30000.00, '1994-06-25', 2500.00, 4),
+    ->  (9, 'Mia Rao', 'Marketing Executive', 10000.00, '1997-08-10', 2700.00, 1),
+    ->  (10, 'Anil Kapoor', 'HR Executive', 15000.00, '1994-09-19', NULL, 2);
+Query OK, 10 rows affected (0.02 sec)
 Records: 10  Duplicates: 0  Warnings: 0
 
-SELECT Emp_Name,Salary FROM Emp WHERE Salary NOT BETWEEN 5000 AND 35000;
+mysql>SELECT Emp_Name,Salary FROM Emp WHERE Salary NOT BETWEEN 5000 AND 35000;
 +--------------+--------+
 | Emp_Name     | Salary |
 +--------------+--------+
 | Amit Sharma  |  75000 |
 | Priya Patel  |  80000 |
 | Ravi Kumar   |  60000 |
-| Sneha Gupta  |  65000 |
 | Vikram Singh |  90000 |
 +--------------+--------+
-5 rows in set (0.00 sec)
+4 rows in set (0.02 sec)
 
-SELECT Emp_Name,Job,Hiredate FROM Emp WHERE Hiredate BETWEEN '1990-02-20' AND '1998-05-01' ORDER BY Hiredate;
+mysql>SELECT Emp_Name,Job,Hiredate FROM Emp WHERE Hiredate BETWEEN '1990-02-20' AND '1998-05-01' ORDER BY Hiredate;
 +-------------+----------------------+------------+
 | Emp_Name    | Job                  | Hiredate   |
 +-------------+----------------------+------------+
@@ -56,11 +55,14 @@ SELECT Emp_Name,Job,Hiredate FROM Emp WHERE Hiredate BETWEEN '1990-02-20' AND '1
 5 rows in set (0.00 sec)
 
 mysql> SELECT Emp_Name AS Employee,Salary AS Monthly_Salary FROM Emp WHERE Salary BETWEEN 5000 AND 12000 AND Dept_no IN(2,4);
-Empty set (0.00 sec)
++-------------+----------------+
+| Employee    | Monthly_Salary |
++-------------+----------------+
+| Sneha Gupta |           5000 |
++-------------+----------------+
+1 row in set (0.07 sec)
 
-mysql> SELECT Emp_name, Hiredate
-    -> FROM Emp
-    -> WHERE YEAR(Hiredate) = 1994;
+mysql> SELECT Emp_name, Hiredate FROM Emp WHERE YEAR(Hiredate) = 1994;
 +-------------+------------+
 | Emp_name    | Hiredate   |
 +-------------+------------+
@@ -69,28 +71,23 @@ mysql> SELECT Emp_name, Hiredate
 +-------------+------------+
 2 rows in set (0.00 sec)
 
-mysql> SELECT Emp_name, Salary, Commission
-    -> FROM Emp
-    -> WHERE Commission IS NOT NULL
-    -> ORDER BY Salary DESC, Commission DESC;
+mysql> SELECT Emp_name, Salary, Commission FROM Emp WHERE Commission IS NOT NULL ORDER BY Salary DESC, Commission DESC;
 +--------------+--------+------------+
 | Emp_name     | Salary | Commission |
 +--------------+--------+------------+
 | Vikram Singh |  90000 |       6000 |
 | Priya Patel  |  80000 |       4000 |
 | Amit Sharma  |  75000 |       5000 |
-| Sneha Gupta  |  65000 |       3500 |
 | Ravi Kumar   |  60000 |       3000 |
-| Mia Rao      |  32000 |       2700 |
 | Sam Patel    |  30000 |       2500 |
 | John Doe     |  25000 |       2000 |
 | Jane Doe     |  18000 |       1500 |
+| Mia Rao      |  10000 |       2700 |
+| Sneha Gupta  |   5000 |       3500 |
 +--------------+--------+------------+
 9 rows in set (0.00 sec)
-mysql> SELECT Emp.Emp_name, Emp.Job
-    -> FROM Emp
-    -> LEFT JOIN Depart ON Emp.Dept_no=Depart.Dept_ID
-    -> WHERE Depart.Manager_ID IS NULL;
+
+mysql> SELECT Emp.Emp_name, Emp.Job FROM Emp LEFT JOIN Depart ON Emp.Dept_no=Depart.Dept_ID WHERE Depart.Manager_ID IS NULL;
 +--------------+---------------------+
 | Emp_name     | Job                 |
 +--------------+---------------------+
@@ -98,15 +95,71 @@ mysql> SELECT Emp.Emp_name, Emp.Job
 | Vikram Singh | Product Manager     |
 | Mia Rao      | Marketing Executive |
 +--------------+---------------------+
-3 rows in set (0.00 sec)
+3 rows in set (0.07 sec)
 
-mysql> SELECT Emp_name
-    -> FROM Emp
-    -> WHERE SUBSTRING(Emp_name, 3, 1) = 'a';
+mysql> SELECT Emp_name FROM Emp WHERE Emp_name LIKE '__a%';
 +----------+
 | Emp_name |
 +----------+
 | Mia Rao  |
 +----------+
 1 row in set (0.00 sec)
+
+mysql> SELECT Emp_name FROM Emp WHERE Emp_name LIKE '%a%' AND Emp_name LIKE '%e%';
++-------------+
+| Emp_name    |
++-------------+
+| Priya Patel |
+| Sneha Gupta |
+| Jane Doe    |
+| Sam Patel   |
++-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT Emp_name, Job, Salary FROM Emp WHERE Job IN ('Sales Representative', 'Stock Clerk') AND Salary NOT IN (20000, 4000, 7000);
++----------+----------------------+--------+
+| Emp_name | Job                  | Salary |
++----------+----------------------+--------+
+| John Doe | Sales Representative |  25000 |
+| Jane Doe | Stock Clerk          |  18000 |
++----------+----------------------+--------+
+2 rows in set (0.02 sec)
+
+mysql> SELECT e.Emp_name, e.Dept_no, d.Dept_name FROM Emp e JOIN Depart d ON e.Dept_no = d.Dept_ID;
++--------------+---------+-----------+
+| Emp_name     | Dept_no | Dept_name |
++--------------+---------+-----------+
+| Amit Sharma  |       1 | IT        |
+| Vikram Singh |       1 | IT        |
+| Mia Rao      |       1 | IT        |
+| Priya Patel  |       2 | HR        |
+| John Doe     |       2 | HR        |
+| Anil Kapoor  |       2 | HR        |
+| Ravi Kumar   |       3 | Finance   |
+| Jane Doe     |       3 | Finance   |
+| Sneha Gupta  |       4 | Marketing |
+| Sam Patel    |       4 | Marketing |
++--------------+---------+-----------+
+10 rows in set (0.01 sec)
+
+mysql> SELECT DISTINCT e1.Emp_no, e1.Emp_name FROM Emp e1 JOIN Emp e2 ON e1.Dept_no = e2.Dept_no WHERE e2.Emp_name LIKE '%u%';
++--------+-------------+
+| Emp_no | Emp_name    |
++--------+-------------+
+|      3 | Ravi Kumar  |
+|      7 | Jane Doe    |
+|      4 | Sneha Gupta |
+|      8 | Sam Patel   |
++--------+-------------+
+4 rows in set (0.02 sec)
+
+mysql> SELECT Emp_name, Hiredate FROM Emp WHERE Dept_no =(SELECT Dept_no FROM Emp WHERE Emp_name = 'Amit Sharma') AND Emp_name <> 'John Doe';
++--------------+------------+
+| Emp_name     | Hiredate   |
++--------------+------------+
+| Amit Sharma  | 2023-01-15 |
+| Vikram Singh | 2023-08-19 |
+| Mia Rao      | 1997-08-10 |
++--------------+------------+
+3 rows in set (0.00 sec)
 
