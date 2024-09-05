@@ -1,0 +1,78 @@
+mysql> CREATE DATABASE Movie;
+Query OK, 1 row affected (0.07 sec)
+mysql> USE Movie;
+Database changed
+mysql> CREATE TABLE ACTOR (Act_id int primary key,Act_Name varchar(100),Act_Gender varchar(10));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE DIRECTOR (Dir_id int primary key,Dir_Name varchar(100),Dir_Phone varchar(15));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE MOVIES (Mov_id int primary key,Mov_Title varchar(150), Mov_Year int,Mov_Lang varchar(50),Dir_id int,foreign key(Dir_id) references DIRECTOR(Dir_id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE MOVIE_CAST (Act_id int,Mov_id int,Role varchar(100),primary key(Act_id, Mov_id),foreign key (Act_id) references ACTOR(Act_id),foreign key (Mov_id) references MOVIES(Mov_id));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE RATING (Mov_id int,Rev_Stars int,primary key (Mov_id),foreign key (Mov_id) references MOVIES(Mov_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO ACTOR (Act_id, Act_Name, Act_Gender)VALUES(1, 'Leonardo DiCaprio', 'Male'),(2, 'Meryl Streep', 'Female'),(3, 'Brad Pitt', 'Male'),(4, 'Angelina Jolie', 'Female'),(5, 'Tom Hanks', 'Male');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO DIRECTOR (Dir_id, Dir_Name, Dir_Phone)VALUES (1, 'Steven Spielberg', '123-456-7890'),(2, 'Hitch Cock', '234-567-8901'),(3, 'James Cameron', '345-678-9012'),(4, 'Christopher Nolan', '456-789-0123'),(5, 'Martin Scorsese', '567-890-1234');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO MOVIES (Mov_id, Mov_Title, Mov_Year, Mov_Lang, Dir_id) VALUES(1, 'Inception', 2010, 'English', 4),(2, 'Titanic', 1997, 'English', 3),(3, 'Jurassic Park', 1993, 'English', 1),(4, 'Psycho', 1960, 'English', 2),(5, 'The Aviator', 2004, 'English', 5);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO MOVIE_CAST (Act_id, Mov_id, Role) VALUES(1, 1, 'Dom Cobb'),(2, 2, 'Rose DeWitt Bukater'),(1, 5, 'Howard Hughes'),(3, 1, 'Robert Fischer'),(4, 2, 'Lisa Rowe');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO RATING (Mov_id, Rev_Stars) VALUES(1, 5),(2, 4),(3, 4),(4, 5),(5, 4);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT Mov_Title FROM MOVIES WHERE Dir_id IN (SELECT Dir_id FROM DIRECTOR WHERE Dir_Name="Hitch Cock");
++-----------+
+| Mov_Title |
++-----------+
+| Psycho    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Mov_Title FROM MOVIES M,MOVIE_CAST MV WHERE M.Mov_id=MV.Mov_id AND Act_id IN(SELECT Act_id FROM MOVIE_CAST
+ GROUP BY Act_id HAVING COUNT(Act_id)>1)GROUP BY Mov_Title HAVING COUNT(*)>1;
+Empty set (0.04 sec)
+
+mysql> SELECT A.Act_Name,C.Mov_Title,C.Mov_Year FROM ACTOR A,MOVIE_CAST B,MOVIES C WHERE A.Act_id=B.Act_id AND B.Mov_id=
+C.Mov_id AND C.Mov_Year NOT BETWEEN 2000 AND 2015;
++----------------+-----------+----------+
+| Act_Name       | Mov_Title | Mov_Year |
++----------------+-----------+----------+
+| Meryl Streep   | Titanic   |     1997 |
+| Angelina Jolie | Titanic   |     1997 |
++----------------+-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT Mov_Title,Max(Rev_Stars) FROM MOVIES INNER JOIN RATING USING(Mov_id) GROUP BY Mov_Title HAVING MAX(Rev_Sta
+rs)>0 ORDER BY Mov_Title;
++---------------+----------------+
+| Mov_Title     | Max(Rev_Stars) |
++---------------+----------------+
+| Inception     |              5 |
+| Jurassic Park |              4 |
+| Psycho        |              5 |
+| The Aviator   |              4 |
+| Titanic       |              4 |
++---------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE RATING SET Rev_Stars=5 WHERE Mov_id IN(SELECT Mov_id FROM MOVIES WHERE Dir_id IN (SELECT Dir_id FROM DIREC
+TOR WHERE Dir_Name="Steven Spielberg"));
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
