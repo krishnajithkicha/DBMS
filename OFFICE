@@ -8,3 +8,105 @@ Query OK, 0 rows affected (0.02 sec)
 
  CREATE TABLE Emp(Emp_no int primary key,Emp_name varchar(25),Job varchar(20),Salary float,Hiredate date,Commission float, Dept_no int,foreign key(Dept_no) references Depart(Dept_ID));
 Query OK, 0 rows affected (0.02 sec)
+
+INSERT INTO Depart (Dept_ID, Dept_Name, Manager_ID, Location) VALUES
+    -> (1, 'IT', NULL, 'Delhi'),
+    -> (2, 'HR', 1, 'Mumbai'),
+    -> (3, 'Finance', 1, 'Chennai'),
+    -> (4, 'Marketing', 2, 'Kolkata');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Emp (Emp_no,Emp_name, Job, Salary, Hiredate, Commission, Dept_no) VALUES
+    -> (1, 'Amit Sharma', 'Software Engineer', 75000.00, '2023-01-15', 5000.00, 1),
+    -> (2, 'Priya Patel', 'HR Manager', 80000.00, '2022-03-22', 4000.00, 2),
+    -> (3, 'Ravi Kumar', 'Data Analyst', 60000.00, '2023-05-10', 3000.00, 3),
+    -> (4, 'Sneha Gupta', 'Marketing Executive', 65000.00, '2022-11-07', 3500.00, 4),
+    -> (5, 'Vikram Singh', 'Product Manager', 90000.00, '2023-08-19', 6000.00, 1),
+    -> (6, 'John Doe', 'Sales Representative', 25000.00, '1993-12-10', 2000.00, 2),
+    -> (7, 'Jane Doe', 'Stock Clerk', 18000.00, '1995-03-15', 1500.00, 3),
+    -> (8, 'Sam Patel', 'Data Analyst', 30000.00, '1994-06-25', 2500.00, 4),
+    -> (9, 'Mia Rao', 'Marketing Executive', 32000.00, '1997-08-10', 2700.00, 1),
+    -> (10, 'Anil Kapoor', 'HR Executive', 15000.00, '1994-09-19', NULL, 2);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+SELECT Emp_Name,Salary FROM Emp WHERE Salary NOT BETWEEN 5000 AND 35000;
++--------------+--------+
+| Emp_Name     | Salary |
++--------------+--------+
+| Amit Sharma  |  75000 |
+| Priya Patel  |  80000 |
+| Ravi Kumar   |  60000 |
+| Sneha Gupta  |  65000 |
+| Vikram Singh |  90000 |
++--------------+--------+
+5 rows in set (0.00 sec)
+
+SELECT Emp_Name,Job,Hiredate FROM Emp WHERE Hiredate BETWEEN '1990-02-20' AND '1998-05-01' ORDER BY Hiredate;
++-------------+----------------------+------------+
+| Emp_Name    | Job                  | Hiredate   |
++-------------+----------------------+------------+
+| John Doe    | Sales Representative | 1993-12-10 |
+| Sam Patel   | Data Analyst         | 1994-06-25 |
+| Anil Kapoor | HR Executive         | 1994-09-19 |
+| Jane Doe    | Stock Clerk          | 1995-03-15 |
+| Mia Rao     | Marketing Executive  | 1997-08-10 |
++-------------+----------------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Emp_Name AS Employee,Salary AS Monthly_Salary FROM Emp WHERE Salary BETWEEN 5000 AND 12000 AND Dept_no IN(2,4);
+Empty set (0.00 sec)
+
+mysql> SELECT Emp_name, Hiredate
+    -> FROM Emp
+    -> WHERE YEAR(Hiredate) = 1994;
++-------------+------------+
+| Emp_name    | Hiredate   |
++-------------+------------+
+| Sam Patel   | 1994-06-25 |
+| Anil Kapoor | 1994-09-19 |
++-------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT Emp_name, Salary, Commission
+    -> FROM Emp
+    -> WHERE Commission IS NOT NULL
+    -> ORDER BY Salary DESC, Commission DESC;
++--------------+--------+------------+
+| Emp_name     | Salary | Commission |
++--------------+--------+------------+
+| Vikram Singh |  90000 |       6000 |
+| Priya Patel  |  80000 |       4000 |
+| Amit Sharma  |  75000 |       5000 |
+| Sneha Gupta  |  65000 |       3500 |
+| Ravi Kumar   |  60000 |       3000 |
+| Mia Rao      |  32000 |       2700 |
+| Sam Patel    |  30000 |       2500 |
+| John Doe     |  25000 |       2000 |
+| Jane Doe     |  18000 |       1500 |
++--------------+--------+------------+
+9 rows in set (0.00 sec)
+mysql> SELECT Emp.Emp_name, Emp.Job
+    -> FROM Emp
+    -> LEFT JOIN Depart ON Emp.Dept_no=Depart.Dept_ID
+    -> WHERE Depart.Manager_ID IS NULL;
++--------------+---------------------+
+| Emp_name     | Job                 |
++--------------+---------------------+
+| Amit Sharma  | Software Engineer   |
+| Vikram Singh | Product Manager     |
+| Mia Rao      | Marketing Executive |
++--------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT Emp_name
+    -> FROM Emp
+    -> WHERE SUBSTRING(Emp_name, 3, 1) = 'a';
++----------+
+| Emp_name |
++----------+
+| Mia Rao  |
++----------+
+1 row in set (0.00 sec)
+
