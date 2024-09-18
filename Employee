@@ -119,4 +119,26 @@ mysql> SELECT * FROM Manages;
 +--------+------------+
 5 rows in set (0.00 sec)
 
+mysql> SELECT Emp_name,Company_name FROM Emp,Works WHERE Emp.Emp_id=Works.Emp_id AND Company_name="State Bank of India";
+
++-------------+---------------------+
+| Emp_name    | Company_name        |
++-------------+---------------------+
+| Amit Sharma | State Bank of India |
++-------------+---------------------+
+1 row in set (0.01 sec)
+
+
+mysql> SELECT Emp.Emp_name FROM Emp JOIN Works ON Emp.Emp_id = Works.Emp_id JOIN Company ON Works.Company_name = Company.Company_name WHERE Emp.City = Company.City;
++--------------+
+| Emp_name     |
++--------------+
+| Amit Sharma  |
+| Priya Patel  |
+| Raj Kumar    |
+| Sneha Reddy  |
+| Vikram Singh |
++--------------+
+5 rows in set (0.06 sec)
+
 
