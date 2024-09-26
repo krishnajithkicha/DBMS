@@ -151,5 +151,17 @@ mysql> SELECT DISTINCT M.Mov_Title
     ->     HAVING COUNT(DISTINCT Mov_id) >= 2
     -> );
 ERROR 1146 (42S02): Table 'Movie.MOVIES' doesn't exist
-mysql> 
+mysql> mysql> SELECT DISTINCT M.Mov_Title FROM Movies  M JOIN Movie_cast  MC ON M.Mov_id = MC.Mov_id WHERE MC.Act_id IN (     SELECT Act_id     FROM Movie_cast     GROUP BY Act_id     HAVING COUNT(DISTINCT Mov_id) >= 1 );
++---------------------+
+| Mov_Title           |
++---------------------+
+| Psycho              |
+| Inception           |
+| Saving Private Ryan |
+| The Dark Knight     |
+| Pulp Fiction        |
++---------------------+
+5 rows in set (0.00 sec)
+
+
 
