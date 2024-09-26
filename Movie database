@@ -1,0 +1,155 @@
+cusat@cusat-SBKPF:~$ sudo mysql
+[sudo] password for cusat: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.39-0ubuntu0.24.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE Movie;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE Movie;
+Database changed
+mysql> CREATE TABLE Actor(Act_id int primary key,Act_Name varchar(20),Act_gender char(1));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Director(Dir_id int primary key,Dir_Name varchar(20),Dir_phone int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Movies(Mov_id int primary key,Mov_title varchar(20),Mov_year int,Mov_lang varchar(10),Dir_id int,foreign key Director(Dir_id) references Movies(DIr_id));
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'Movies_ibfk_1' in the referenced table 'Movies'
+mysql> CREATE TABLE Movies(Mov_id int primary key,Mov_title varchar(20),Mov_year int,Mov_lang varchar(10),Dir_id int,foreign key (Dir_id) references Director(Dir_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> ALTER TABLE Director MODIFY Dir_phone int(10);
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> CREATE TABLE Movie_cast(Act_id int,foreign key (Act_id) references Actor(Act_id),Mov_id int ,foreign key (Mov_id) references Movies(Mov_id),Role varchar(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Rating(Mov_id int,foreign key (Mov_id) references Movies(Mov_id),Rev_stars int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO ACTOR (Act_id, Act_Name, Act_Gender)VALUES(1, 'Leonardo DiCaprio', 'Male'),(2, 'Meryl Streep', 'Female'),(3, 'Brad Pitt', 'Male'),(4, 'Angelina Jolie', 'Female'),(5, 'Tom Hanks', 'Male');
+ERROR 1146 (42S02): Table 'Movie.ACTOR' doesn't exist
+mysql> Query OK, 5 rows affected (0.01 sec)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 5 rows affected (0.01 sec)' at line 1
+mysql> INSERT INTO ACTOR (Act_id, Act_Name, Act_Gender)VALUES(1, 'Leonardo DiCaprio', 'Male'),(2, 'Meryl Streep', 'Female'),(3, 'Brad Pitt', 'Male'),(4, 'Angelina Jolie', 'Female'),(5, 'Tom Hanks', 'Male');
+ERROR 1146 (42S02): Table 'Movie.ACTOR' doesn't exist
+mysql> INSERT INTO ACTOR (Act_id, Act_Name, Act_Gender)VALUES(1, 'Leonardo DiCaprio', 'M'),(2, 'Meryl Streep', 'F'),(3, 'Brad Pitt', 'M'),(4, 'Angelina Jolie', 'F'),(5, 'Tom Hanks', 'M');
+ERROR 1146 (42S02): Table 'Movie.ACTOR' doesn't exist
+mysql> INSERT INTO Actor (Act_id, Act_Name, Act_Gender)VALUES(1, 'Leonardo DiCaprio', 'M'),(2, 'Meryl Streep', 'F'),(3, 'Brad Pitt', 'M'),(4, 'Angelina Jolie', 'F'),(5, 'Tom Hanks', 'M');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Actor;
++--------+-------------------+------------+
+| Act_id | Act_Name          | Act_gender |
++--------+-------------------+------------+
+|      1 | Leonardo DiCaprio | M          |
+|      2 | Meryl Streep      | F          |
+|      3 | Brad Pitt         | M          |
+|      4 | Angelina Jolie    | F          |
+|      5 | Tom Hanks         | M          |
++--------+-------------------+------------+
+5 rows in set (0.01 sec)
+
+mysql> INSERT INTO DIRECTOR (Dir_id, Dir_Name, Dir_Phone) VALUES(1, 'Hitch Cock', 1234567890),(2, 'Steven Spielberg', 9876543210),(3, 'Christopher Nolan', 5551234567),(4, 'Quentin Tarantino', 4445556666),(5, 'Martin Scorsese', 7778889999);
+ERROR 1146 (42S02): Table 'Movie.DIRECTOR' doesn't exist
+mysql> INSERT INTO Director(Dir_id, Dir_Name, Dir_Phone) VALUES(1, 'Hitch Cock', 1234567890),(2, 'Steven Spielberg', 9876543210),(3, 'Christopher Nolan', 5551234567),(4, 'Quentin Tarantino', 4445556666),(5, 'Martin Scorsese', 7778889999);
+ERROR 1264 (22003): Out of range value for column 'Dir_phone' at row 2
+mysql> 
+mysql> INSERT INTO Director(Dir_id, Dir_Name, Dir_Phone) VALUES(1, 'Hitch Cock', 12345690),(2, 'Steven Spielberg', 98765210),(3, 'Christopher Nolan', 55512367),(4, 'Quentin Tarantino', 44455566),(5, 'Martin Scorsese', 77788999);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Movies(Mov_id, Mov_Title, Mov_Year, Mov_Lang, Dir_id) VALUES(1, 'Psycho', 1960, 'English', 1),(2, 'Inception', 2010, 'English', 3),(3, 'Saving Private Ryan', 1998, 'English', 2),(4, 'The Dark Knight', 2008, 'English', 3),(5, 'Pulp Fiction', 1994, 'English', 4);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO RATING (Mov_id, Rev_Stars) VALUES
+    -> (1, 4),
+    -> (1, 5),
+    -> (2, 5),
+    -> (3, 4),
+    -> (4, 5);
+ERROR 1146 (42S02): Table 'Movie.RATING' doesn't exist
+mysql> INSERT INTO Movie_cast(Act_id, Mov_id, Role) VALUES(1, 1, 'Lead'),(2, 2, 'Supporting'),(3, 3, 'Lead'),(4, 4, 'Supporting'),(5, 5, 'Lead');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Rating(Mov_id, Rev_Stars) VALUES(1, 4),(1, 5),(2, 5),(3, 4),(4, 5);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT Mov_title FROM Movies WHERE Dir_id IN(SELECT Dir_id FROM Director WHERE Dir_Name="Hitch Cock";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SELECT Mov_title FROM Movies WHERE Dir_id IN(SELECT Dir_id FROM Director WHERE Dir_Name="Hitch Cock");
++-----------+
+| Mov_title |
++-----------+
+| Psycho    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Act_name,Mov_title,Mov_year FROM Actor A,Movies M ,Movie_cast MC WHERE A.Act_id=MC.Mov_id AND M.Mov_id=MC.Mov_id AND M.Mov_year NOT BETWEEN 2000 AND 2015;
++-------------------+---------------------+----------+
+| Act_name          | Mov_title           | Mov_year |
++-------------------+---------------------+----------+
+| Leonardo DiCaprio | Psycho              |     1960 |
+| Brad Pitt         | Saving Private Ryan |     1998 |
+| Tom Hanks         | Pulp Fiction        |     1994 |
++-------------------+---------------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> UPDATE Rating SET Rev_stars=5 WHERE Mov_id IN(SELECT Mov_id FROM Movies WHERE Dir_id IN(SELECT Dir_id FROM Director WHERE Dir_Name="Steven Spielberg"));
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Rating;
++--------+-----------+
+| Mov_id | Rev_stars |
++--------+-----------+
+|      1 |         4 |
+|      1 |         5 |
+|      2 |         5 |
+|      3 |         5 |
+|      4 |         5 |
++--------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Mov_title,Max(Rev_stars) FROM Movies INNER JOIN Rating USING(Mov_id) GROUP BY Mov_title HAVING Max(Rev_stars)>0 ORDER BY Mov_title;
++---------------------+----------------+
+| Mov_title           | Max(Rev_stars) |
++---------------------+----------------+
+| Inception           |              5 |
+| Psycho              |              5 |
+| Saving Private Ryan |              5 |
+| The Dark Knight     |              5 |
++---------------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT Mov_title FROM Movies M,Movie_cast MC WHERE M.Mov_id=MC.Mov_id AND Act_id IN(SELECT Act_id FROM Movie_cast GROUP BY Act_id HAVING COUNT(Act_id)>=1) GROUP BY Mov_title HAVING COUNT(*)>1;
+Empty set (0.00 sec)
+
+mysql> SELECT DISTINCT M.Mov_Title
+    -> FROM MOVIES M
+    -> JOIN MOVIE_CAST MC ON M.Mov_id = MC.Mov_id
+    -> WHERE MC.Act_id IN (
+    ->     SELECT Act_id
+    ->     FROM MOVIE_CAST
+    ->     GROUP BY Act_id
+    ->     HAVING COUNT(DISTINCT Mov_id) >= 2
+    -> );
+ERROR 1146 (42S02): Table 'Movie.MOVIES' doesn't exist
+mysql> 
+
