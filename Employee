@@ -140,5 +140,6 @@ mysql> SELECT Emp.Emp_name FROM Emp JOIN Works ON Emp.Emp_id = Works.Emp_id JOIN
 | Vikram Singh |
 +--------------+
 5 rows in set (0.06 sec)
-
+mysql> SELECT Em.Emp_name AS Employee,M.Emp_name AS Manager FROM Emp Em JOIN Manages Mg ON Em.Emp_id=Mg.Emp_id JOIN Emp M ON Mg.Manager_id=M.Emp_id WHERE Em.City=M.City AND Em.Street_no=M.Street_no;
+Empty set (0.02 sec)
 
