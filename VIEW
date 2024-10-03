@@ -1,0 +1,165 @@
+mysql> CREATE DATABASE OFFICE;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE OFFICE;
+Database changed
+mysql> CREATE TABLE Employee(Emp_no int primary key,Emp_name varchar(10),Job varchar(10),Dept_no varchar(10),Salary float(10,2));
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> INSERT INTO Employee(Emp_no,Emp_name,Job,Dept_no,Salary) VALUES (101,'Amrutha','ASP','CS2034',150000),(102,'Brindha','Manager','IT2055',20000),(103,'John','Professor','PH4022',40000),(104,'Shreya','ACP','CH2850',45000),(105,'Riya','HRManager','TE4025',30000);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> CREATE VIEW Emp_View AS SELECT Emp_no,Emp_name,Job,Dept_no,Salary FROM Employee;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM Emp_View;
++--------+----------+-----------+---------+-----------+
+| Emp_no | Emp_name | Job       | Dept_no | Salary    |
++--------+----------+-----------+---------+-----------+
+|    101 | Amrutha  | ASP       | CS2034  | 150000.00 |
+|    102 | Brindha  | Manager   | IT2055  |  20000.00 |
+|    103 | John     | Professor | PH4022  |  40000.00 |
+|    104 | Shreya   | ACP       | CH2850  |  45000.00 |
+|    105 | Riya     | HRManager | TE4025  |  30000.00 |
++--------+----------+-----------+---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE EmpPerinfo(Emp_no int primary key,Emp_name varchar(10),Dept_no varchar(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE EmpJobinfo(Emp_no int primary key,Job varchar(10),Salary float(10,2),foreign key (Emp_no) references EmpPerinfo(Emp_no));
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> select * from EmpPerinfo;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO EmployeePersonalInfo (Emp_no, Emp_name, Dept_no)
+    -> SELECT Emp_no, Emp_name, Dept_no FROM Employee;
+ERROR 1146 (42S02): Table 'OFFICE.EmployeePersonalInfo' doesn't exist
+mysql> 
+mysql> INSERT INTO EmployeeJobInfo (Emp_no, Job, Salary)
+    -> SELECT Emp_no, Job, Salary FROM Employee;
+ERROR 1146 (42S02): Table 'OFFICE.EmployeeJobInfo' doesn't exist
+mysql> INSERT INTO EmpPerinfo(Emp_no, Emp_name, Dept_no)
+    -> SELECT Emp_no, Emp_name, Dept_no FROM Employee;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO EmpJobinfo (Emp_no, Job, Salary)
+    -> SELECT Emp_no, Job, Salary FROM Employee;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EmpPerinfo;
++--------+----------+---------+
+| Emp_no | Emp_name | Dept_no |
++--------+----------+---------+
+|    101 | Amrutha  | CS2034  |
+|    102 | Brindha  | IT2055  |
+|    103 | John     | PH4022  |
+|    104 | Shreya   | CH2850  |
+|    105 | Riya     | TE4025  |
++--------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EmpJobinfo;
++--------+-----------+-----------+
+| Emp_no | Job       | Salary    |
++--------+-----------+-----------+
+|    101 | ASP       | 150000.00 |
+|    102 | Manager   |  20000.00 |
+|    103 | Professor |  40000.00 |
+|    104 | ACP       |  45000.00 |
+|    105 | HRManager |  30000.00 |
++--------+-----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT p.Emp_no, p.Emp_name, p.Dept_no, j.Job, j.Salary
+    -> FROM EmpPerinfo p
+    -> JOIN EmpJobinfo j ON p.Emp_no = j.Emp_no;
++--------+----------+---------+-----------+-----------+
+| Emp_no | Emp_name | Dept_no | Job       | Salary    |
++--------+----------+---------+-----------+-----------+
+|    101 | Amrutha  | CS2034  | ASP       | 150000.00 |
+|    102 | Brindha  | IT2055  | Manager   |  20000.00 |
+|    103 | John     | PH4022  | Professor |  40000.00 |
+|    104 | Shreya   | CH2850  | ACP       |  45000.00 |
+|    105 | Riya     | TE4025  | HRManager |  30000.00 |
++--------+----------+---------+-----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> 
+
+mysql> CREATE TABLE Employee_ASP(
+    ->     Emp_no int primary key,
+    ->     Emp_name varchar(10),
+    ->     Job varchar(10),
+    ->     Dept_no varchar(10),
+    ->     Salary float(10, 2)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> INSERT INTO Employee_ASP (Emp_no, Emp_name, Job, Dept_no, Salary)
+    -> SELECT Emp_no, Emp_name, Job, Dept_no, Salary
+    -> FROM Employee
+    -> WHERE Dept_no = 'ASP';
+Query OK, 0 rows affected (0.00 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Employee_ASP;
+Empty set (0.00 sec)
+
+mysql> CREATE VIEW Emp_ASP_View AS
+    -> SELECT * FROM Employee_ASP;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM Employee_ASP;
+Empty set (0.00 sec)
+
+mysql> ALTER TABLE Emp_View ADD Dept_name varchar(10);
+ERROR 1347 (HY000): 'OFFICE.Emp_View' is not BASE TABLE
+mysql> SELECT * FROM Employee;
++--------+----------+-----------+---------+-----------+
+| Emp_no | Emp_name | Job       | Dept_no | Salary    |
++--------+----------+-----------+---------+-----------+
+|    101 | Amrutha  | ASP       | CS2034  | 150000.00 |
+|    102 | Brindha  | Manager   | IT2055  |  20000.00 |
+|    103 | John     | Professor | PH4022  |  40000.00 |
+|    104 | Shreya   | ACP       | CH2850  |  45000.00 |
+|    105 | Riya     | HRManager | TE4025  |  30000.00 |
++--------+----------+-----------+---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Emp_View;
++--------+----------+-----------+---------+-----------+
+| Emp_no | Emp_name | Job       | Dept_no | Salary    |
++--------+----------+-----------+---------+-----------+
+|    101 | Amrutha  | ASP       | CS2034  | 150000.00 |
+|    102 | Brindha  | Manager   | IT2055  |  20000.00 |
+|    103 | John     | Professor | PH4022  |  40000.00 |
+|    104 | Shreya   | ACP       | CH2850  |  45000.00 |
+|    105 | Riya     | HRManager | TE4025  |  30000.00 |
++--------+----------+-----------+---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Emp_View SET Dept_no='CM2369' WHERE Emp_no=104;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Employee;
++--------+----------+-----------+---------+-----------+
+| Emp_no | Emp_name | Job       | Dept_no | Salary    |
++--------+----------+-----------+---------+-----------+
+|    101 | Amrutha  | ASP       | CS2034  | 150000.00 |
+|    102 | Brindha  | Manager   | IT2055  |  20000.00 |
+|    103 | John     | Professor | PH4022  |  40000.00 |
+|    104 | Shreya   | ACP       | CM2369  |  45000.00 |
+|    105 | Riya     | HRManager | TE4025  |  30000.00 |
++--------+----------+-----------+---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> DROP VIEW Emp_view;
+ERROR 1051 (42S02): Unknown table 'OFFICE.Emp_view'
+mysql> DROP VIEW Emp_View;
+Query OK, 0 rows affected (0.01 sec)
