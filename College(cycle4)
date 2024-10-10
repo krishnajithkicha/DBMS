@@ -1,0 +1,136 @@
+mysql> CREATE DATABASE College;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE College;
+Database changed
+mysql> CREATE TABLE Faculty(Faculty_code int primary key,Faculty_name varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Subject(Subject_code int primary key,Subject_Name varchar(20),Maxmarks float(5,2),Faculty_code int,Foreign key (Faculty_code) references Faculty(Faculty_code));
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> CREATE TABLE Student(Student_code int primary key,Student_name varchar(20),DOB date,Student_branch varchar(30),Admission_date date);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Faculty (Faculty_code, Faculty_name) VALUES(1, 'Dr. Meera Menon'),(2, 'Prof. Rajesh Patel'),(3, 'Dr. Anita Gupta'),(4, 'Prof. Suresh Kumar'),(5, 'Dr. Latha Iyer');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Faculty;
++--------------+--------------------+
+| Faculty_code | Faculty_name       |
++--------------+--------------------+
+|            1 | Dr. Meera Menon    |
+|            2 | Prof. Rajesh Patel |
+|            3 | Dr. Anita Gupta    |
+|            4 | Prof. Suresh Kumar |
+|            5 | Dr. Latha Iyer     |
++--------------+--------------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO Subject (Subject_code, Subject_Name, Maxmarks, Faculty_code) VALUES(101, 'Mathematics', 100, 1),(102, 'Physics', 100, 2),(103, 'Chemistry', 100, 3),(104, 'Biology', 100, 4),(105, 'Computer Science', 100, 5);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Subject;
++--------------+------------------+----------+--------------+
+| Subject_code | Subject_Name     | Maxmarks | Faculty_code |
++--------------+------------------+----------+--------------+
+|          101 | Mathematics      |   100.00 |            1 |
+|          102 | Physics          |   100.00 |            2 |
+|          103 | Chemistry        |   100.00 |            3 |
+|          104 | Biology          |   100.00 |            4 |
+|          105 | Computer Science |   100.00 |            5 |
++--------------+------------------+----------+--------------+
+5 rows in set (0.00 sec)
+mysql> INSERT INTO Student (Student_code, Student_Name, DOB, Student_branch, Admission_date) VALUES(201, 'Shreya Kumar', '2002-05-14', 'Engineering', '2020-07-01'),(202, 'Karti Rao', '2001-03-22', 'Medicine', '2019-06-15'),(203, 'Arjun Singh', '2003-11-11', 'Science', '2021-08-20'),(204, 'Ananya Roy', '2002-09-09', 'Arts', '2020-09-10'),(205, 'Laya Mehta', '2001-01-30', 'Commerce', '2019-01-25');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Student;
++--------------+--------------+------------+----------------+----------------+
+| Student_code | Student_name | DOB        | Student_branch | Admission_date |
++--------------+--------------+------------+----------------+----------------+
+|          201 | Shreya Kumar | 2002-05-14 | Engineering    | 2020-07-01     |
+|          202 | Karti Rao    | 2001-03-22 | Medicine       | 2019-06-15     |
+|          203 | Arjun Singh  | 2003-11-11 | Science        | 2021-08-20     |
+|          204 | Ananya Roy   | 2002-09-09 | Arts           | 2020-09-10     |
+|          205 | Laya Mehta   | 2001-01-30 | Commerce       | 2019-01-25     |
++--------------+--------------+------------+----------------+----------------+
+5 rows in set (0.00 sec)
+mysql> SELECT COUNT(*) FROM Faculty;
++----------+
+| COUNT(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Student WHERE Student_Name LIKE "A%";
++--------------+--------------+------------+----------------+----------------+
+| Student_code | Student_name | DOB        | Student_branch | Admission_date |
++--------------+--------------+------------+----------------+----------------+
+|          203 | Arjun Singh  | 2003-11-11 | Science        | 2021-08-20     |
+|          204 | Ananya Roy   | 2002-09-09 | Arts           | 2020-09-10     |
++--------------+--------------+------------+----------------+----------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT COUNT(*) FROM Student;
++----------+
+| COUNT(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT COUNT(DISTINCT Student_branch) FROM Student;
++--------------------------------+
+| COUNT(DISTINCT Student_branch) |
++--------------------------------+
+|                              5 |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Faculty_name,Subject_name FROM Faculty,Subject WHERE Faculty.Faculty_code=Subject.Faculty_code;
++--------------------+------------------+
+| Faculty_name       | Subject_name     |
++--------------------+------------------+
+| Dr. Meera Menon    | Mathematics      |
+| Prof. Rajesh Patel | Physics          |
+| Dr. Anita Gupta    | Chemistry        |
+| Prof. Suresh Kumar | Biology          |
+| Dr. Latha Iyer     | Computer Science |
++--------------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Faculty.Faculty_name FROM Faculty,Subject WHERE Faculty. Faculty_code IN(SELECT Faculty_code FROM Subject GROUP BY Faculty_code HAVING COUNT(Subject_code)>1);
+Empty set (0.00 sec)
+
+mysql> SELECT Subject_name,Maxmarks FROM Subject ORDER BY Maxmarks ASC;
++------------------+----------+
+| Subject_name     | Maxmarks |
++------------------+----------+
+| Mathematics      |   100.00 |
+| Physics          |   100.00 |
+| Chemistry        |   100.00 |
+| Biology          |   100.00 |
+| Computer Science |   100.00 |
++------------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Subject RENAME COLUMN Maxmarks TO Maximum;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Subject;
++--------------+------------------+---------+--------------+
+| Subject_code | Subject_Name     | Maximum | Faculty_code |
++--------------+------------------+---------+--------------+
+|          101 | Mathematics      |  100.00 |            1 |
+|          102 | Physics          |  100.00 |            2 |
+|          103 | Chemistry        |  100.00 |            3 |
+|          104 | Biology          |  100.00 |            4 |
+|          105 | Computer Science |  100.00 |            5 |
++--------------+------------------+---------+--------------+
+5 rows in set (0.00 sec)
+
