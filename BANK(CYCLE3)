@@ -1,0 +1,150 @@
+mysql> CREATE DATABASE Bank;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE Bank;
+Database changed
+mysql> CREATE TABLE Account(Account_number int(20) primary key,IFSC_Code varchar(20),Bank_name varchar(20),Bank_branch varchar(20),Account_type varchar(20),Account_balance decimal(10,2));
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> INSERT INTO Account (Account_number, IFSC_Code, Bank_name, Bank_branch, Account_type, Account_balance) VALUES(12345, 'SBIN0000001', 'State Bank of India', 'Mumbai', 'Savings', 15000.50),(23456, 'ICIC0000002', 'ICICI Bank', 'Delhi', 'Current', 25000.75),(3456, 'HDFC0000003', 'HDFC Bank', 'Bangalore', 'Savings', 35000.00),(4567, 'AXIS0000004', 'Axis Bank', 'Chennai', 'Current', 45000.80),(5678, 'KOTK0000005', 'Kotak Mahindra Bank', 'Kolkata', 'Savings', 55000.45);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Account;
++----------------+-------------+---------------------+-------------+--------------+-----------------+
+| Account_number | IFSC_Code   | Bank_name           | Bank_branch | Account_type | Account_balance |
++----------------+-------------+---------------------+-------------+--------------+-----------------+
+|           3456 | HDFC0000003 | HDFC Bank           | Bangalore   | Savings      |        35000.00 |
+|           4567 | AXIS0000004 | Axis Bank           | Chennai     | Current      |        45000.80 |
+|           5678 | KOTK0000005 | Kotak Mahindra Bank | Kolkata     | Savings      |        55000.45 |
+|          12345 | SBIN0000001 | State Bank of India | Mumbai      | Savings      |        15000.50 |
+|          23456 | ICIC0000002 | ICICI Bank          | Delhi       | Current      |        25000.75 |
++----------------+-------------+---------------------+-------------+--------------+-----------------+
+5 rows in set (0.00 sec)
+mysql> SELECT UPPER(Bank_name) FROM Account;
++---------------------+
+| UPPER(Bank_name)    |
++---------------------+
+| HDFC BANK           |
+| AXIS BANK           |
+| KOTAK MAHINDRA BANK |
+| STATE BANK OF INDIA |
+| ICICI BANK          |
++---------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT LOWER(Bank_name) FROM Account;
++---------------------+
+| LOWER(Bank_name)    |
++---------------------+
+| hdfc bank           |
+| axis bank           |
+| kotak mahindra bank |
+| state bank of india |
+| icici bank          |
++---------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT LENGTH(Bank_name) FROM Account;
++-------------------+
+| LENGTH(Bank_name) |
++-------------------+
+|                 9 |
+|                 9 |
+|                19 |
+|                19 |
+|                10 |
++-------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT REPLACE(Bank_name,'Kotak Mahindra Bank','Canara Bank') FROM Account;
++--------------------------------------------------------+
+| REPLACE(Bank_name,'Kotak Mahindra Bank','Canara Bank') |
++--------------------------------------------------------+
+| HDFC Bank                                              |
+| Axis Bank                                              |
+| Canara Bank                                            |
+| State Bank of India                                    |
+| ICICI Bank                                             |
++--------------------------------------------------------+
+5 rows in set (0.00 sec)
+mysql> SELECT ROUND(Account_balance,3) FROM Account;
++--------------------------+
+| ROUND(Account_balance,3) |
++--------------------------+
+|                 35000.00 |
+|                 45000.80 |
+|                 55000.45 |
+|                 15000.50 |
+|                 25000.75 |
++--------------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT CEIL(Account_balance) FROM Account;
++-----------------------+
+| CEIL(Account_balance) |
++-----------------------+
+|                 35000 |
+|                 45001 |
+|                 55001 |
+|                 15001 |
+|                 25001 |
++-----------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT FLOOR(Account_balance) FROM Account;
++------------------------+
+| FLOOR(Account_balance) |
++------------------------+
+|                  35000 |
+|                  45000 |
+|                  55000 |
+|                  15000 |
+|                  25000 |
++------------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT SIGN(Account_balance) FROM Account;
++-----------------------+
+| SIGN(Account_balance) |
++-----------------------+
+|                     1 |
+|                     1 |
+|                     1 |
+|                     1 |
+|                     1 |
++-----------------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT CURRENT_DATE(),SYSDATE();
++----------------+---------------------+
+| CURRENT_DATE() | SYSDATE()           |
++----------------+---------------------+
+| 2024-10-10     | 2024-10-10 14:52:24 |
++----------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT EXTRACT(MONTH FROM CURRENT_DATE());
++------------------------------------+
+| EXTRACT(MONTH FROM CURRENT_DATE()) |
++------------------------------------+
+|                                 10 |
++------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT EXTRACT(YEAR FROM CURRENT_DATE());
++-----------------------------------+
+| EXTRACT(YEAR FROM CURRENT_DATE()) |
++-----------------------------------+
+|                              2024 |
++-----------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT ASCII('A'),ASCII('B'),ASCII('C'),ASCII('D'),ASCII('E');
++------------+------------+------------+------------+------------+
+| ASCII('A') | ASCII('B') | ASCII('C') | ASCII('D') | ASCII('E') |
++------------+------------+------------+------------+------------+
+|         65 |         66 |         67 |         68 |         69 |
++------------+------------+------------+------------+------------+
+1 row in set (0.00 sec)
+
