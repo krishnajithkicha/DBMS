@@ -1,0 +1,144 @@
+mysql> CREATE DATABASE COLLEGE;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> USE COLLEGE;
+Database changed
+mysql> CREATE TABLE STUDENT(Student_id int primary key, Name varchar(20), Department varchar(20), Mark1 float, Mark2 float, CGPA float);
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> DESC STUDENT;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Student_id | int         | NO   | PRI | NULL    |       |
+| Name       | varchar(20) | YES  |     | NULL    |       |
+| Department | varchar(20) | YES  |     | NULL    |       |
+| Mark1      | float       | YES  |     | NULL    |       |
+| Mark2      | float       | YES  |     | NULL    |       |
+| CGPA       | float       | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.07 sec)
+mysql>  INSERT INTO STUDENT (Student_id, Name, Department, Mark1, Mark2, CGPA) VALUES (101, "Anu", "CS", 85.5, 80.5, 8.20), (102, "Britto", "IT", 65.5,75.5,
+ 6.85), (103, "Dona", "EC", 83.5, 88.5, 7.00), (104, "Kevin", "CS", 85.5, 89.5, 8.88), (105, "Shreya", "IT", 75.5,78.5,7.20);
+Query OK, 5 rows affected (0.07 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENT;
++------------+--------+------------+-------+-------+------+
+| Student_id | Name   | Department | Mark1 | Mark2 | CGPA |
++------------+--------+------------+-------+-------+------+
+|        101 | Anu    | CS         |  85.5 |  80.5 |  8.2 |
+|        102 | Britto | IT         |  65.5 |  75.5 | 6.85 |
+|        103 | Dona   | EC         |  83.5 |  88.5 |    7 |
+|        104 | Kevin  | CS         |  85.5 |  89.5 | 8.88 |
+|        105 | Shreya | IT         |  75.5 |  78.5 |  7.2 |
++------------+--------+------------+-------+-------+------+
+5 rows in set (0.00 sec)
+mysql> CREATE TABLE HOSTEL_DETAILS(Std_id int primary key, Stud_name varchar(20), Block varchar(10), Roomno int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESC HOSTEL_DETAILS;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Std_id    | int         | NO   | PRI | NULL    |       |
+| Stud_name | varchar(20) | YES  |     | NULL    |       |
+| Block     | varchar(10) | YES  |     | NULL    |       |
+| Roomno    | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql>  INSERT INTO HOSTEL_DETAILS(Std_id, Stud_name, Block, Roomno) VALUES (201, "Arya", "A",101), (202, "Brinda", "B", 108), (203, "Roma", "E", 105), (204, "Shrinda", "C",102), (205, "Hasiya", "D", 105);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM HOSTEL_DETAILS;
++--------+-----------+-------+--------+
+| Std_id | Stud_name | Block | Roomno |
++--------+-----------+-------+--------+
+|    201 | Arya      | A     |    101 |
+|    202 | Brinda    | B     |    108 |
+|    203 | Roma      | E     |    105 |
+|    204 | Shrinda   | C     |    102 |
+|    205 | Hasiya    | D     |    105 |
++--------+-----------+-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> RENAME TABLE HOSTEL_DETAILS TO HOSTEL;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> SELECT * FROM HOSTEL;
++--------+-----------+-------+--------+
+| Std_id | Stud_name | Block | Roomno |
++--------+-----------+-------+--------+
+|    201 | Arya      | A     |    101 |
+|    202 | Brinda    | B     |    108 |
+|    203 | Roma      | E     |    105 |
+|    204 | Shrinda   | C     |    102 |
+|    205 | Hasiya    | D     |    105 |
++--------+-----------+-------+--------+
+5 rows in set (0.01 sec)
+
+mysql> UPDATE STUDENT SET CGPA=8.00 WHERE Student_id=103;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM STUDENT WHERE Student_id=103;
++------------+------+------------+-------+-------+------+
+| Student_id | Name | Department | Mark1 | Mark2 | CGPA |
++------------+------+------------+-------+-------+------+
+|        103 | Dona | EC         |  83.5 |  88.5 |    8 |
++------------+------+------------+-------+-------+------+
+1 row in set (0.00 sec)
+mysql> SELECT Name,CGPA FROM STUDENT WHERE CGPA>8.00;
++-------+------+
+| Name  | CGPA |
++-------+------+
+| Anu   |  8.2 |
+| Kevin | 8.88 |
++-------+------+
+2 rows in set (0.01 sec)
+
+
+mysql> SELECT Stud_name AS Name,Block FROM HOSTEL WHERE Block="A";
++------+-------+
+| Name | Block |
++------+-------+
+| Arya | A     |
++------+-------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Name,Department FROM STUDENT WHERE Department="CS";
++-------+------------+
+| Name  | Department |
++-------+------------+
+| Anu   | CS         |
+| Kevin | CS         |
++-------+------------+
+2 rows in set (0.00 sec)
+
+mysql> DELETE FROM HOSTEL WHERE Roomno=108;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM HOSTEL;
++--------+-----------+-------+--------+
+| Std_id | Stud_name | Block | Roomno |
++--------+-----------+-------+--------+
+|    201 | Arya      | A     |    101 |
+|    203 | Roma      | E     |    105 |
+|    204 | Shrinda   | C     |    102 |
+|    205 | Hasiya    | D     |    105 |
++--------+-----------+-------+--------+
+4 rows in set (0.00 sec)
+
+mysql> UPDATE STUDENT SET Department="EC" WHERE Name="Anu";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM STUDENT WHERE Name="Anu";
++------------+------+------------+-------+-------+------+
+| Student_id | Name | Department | Mark1 | Mark2 | CGPA |
++------------+------+------------+-------+-------+------+
+|        101 | Anu  | EC         |  85.5 |  80.5 |  8.2 |
++------------+------+------------+-------+-------+------+
+1 row in set (0.00 sec)
