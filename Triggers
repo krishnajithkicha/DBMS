@@ -1,0 +1,50 @@
+mysql> CREATE DATABASE Triggers;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE Triggers;
+Database changed
+mysql> CREATE TABLE Event(Event_id int primary key,Name varchar(50),Description TEXT,City varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Participant(Player_id int primary key,PName varchar(20),Event_id int,FOREIGN KEY (Event_id) REFERENCES Event(Event_id),Gender char(1),Years year);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE Prizes(Prize_id int primary key,Money float(10,2),Event_id int,FOREIGN KEY (Event_id) REFERENCES Event(Event_id),Ranks int,Years year);
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> CREATE TABLE Winners(Prize_id int,FOREIGN KEY (Prize_id) REFERENCES Prizes(Prize_id),Player_id int,FOREIGN KEY (Player_id) REFERENCES Participant(Player_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TRIGGER after_event_insert
+    -> AFTER INSERT ON Event
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     -- Insert 1st prize (1500)
+    ->     INSERT INTO Prizes (Prize_id, Money, Event_id, Ranks, Years) 
+    ->     VALUES (NEW.Event_id * 100 + 1, 1500, NEW.Event_id, 1, YEAR(CURDATE()));
+    -> 
+    ->     -- Insert 2nd prize (1000)
+    ->     INSERT INTO Prizes (Prize_id, Money, Event_id, Ranks, Years) 
+    ->     VALUES (NEW.Event_id * 100 + 2, 1000, NEW.Event_id, 2, YEAR(CURDATE()));
+    -> 
+    ->     -- Insert 3rd prize (500)
+    ->     INSERT INTO Prizes (Prize_id, Money, Event_id, Ranks, Years) 
+    ->     VALUES (NEW.Event_id * 100 + 3, 500, NEW.Event_id, 3, YEAR(CURDATE()));
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> -- Insert a new event
+mysql> INSERT INTO Event (Event_id, Name, Description, City) 
+    -> VALUES (1, 'Annual Marathon', 'A long-distance race', 'New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM Prizes WHERE Event_id = 1;
++----------+---------+----------+-------+-------+
+| Prize_id | Money   | Event_id | Ranks | Years |
++----------+---------+----------+-------+-------+
+|      101 | 1500.00 |        1 |     1 |  2024 |
+|      102 | 1000.00 |        1 |     2 |  2024 |
+|      103 |  500.00 |        1 |     3 |  2024 |
++----------+---------+----------+-------+-------+
+3 rows in set (0.00 sec)
