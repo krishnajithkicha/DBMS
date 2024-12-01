@@ -3,7 +3,8 @@ Query OK, 1 row affected (0.02 sec)
 
 mysql> USE COLLEGE;
 Database changed
-mysql> CREATE TABLE STUDENT(Student_id int primary key, Name varchar(20), Department varchar(20), Mark1 float, Mark2 float, CGPA float);
+mysql> CREATE TABLE STUDENT(Student_id int primary key, Name varchar(20), 
+->Department varchar(20), Mark1 float, Mark2 float, CGPA float);
 Query OK, 0 rows affected (0.17 sec)
 
 mysql> DESC STUDENT;
@@ -18,8 +19,12 @@ mysql> DESC STUDENT;
 | CGPA       | float       | YES  |     | NULL    |       |
 +------------+-------------+------+-----+---------+-------+
 6 rows in set (0.07 sec)
-mysql>  INSERT INTO STUDENT (Student_id, Name, Department, Mark1, Mark2, CGPA) VALUES (101, "Anu", "CS", 85.5, 80.5, 8.20), (102, "Britto", "IT", 65.5,75.5,
- 6.85), (103, "Dona", "EC", 83.5, 88.5, 7.00), (104, "Kevin", "CS", 85.5, 89.5, 8.88), (105, "Shreya", "IT", 75.5,78.5,7.20);
+mysql>  INSERT INTO STUDENT (Student_id, Name, Department, Mark1, Mark2, CGPA)
+->VALUES (101, "Anu", "CS", 85.5, 80.5, 8.20), 
+->(102, "Britto", "IT", 65.5,75.5, 6.85), 
+->(103, "Dona", "EC", 83.5, 88.5, 7.00), 
+->(104, "Kevin", "CS", 85.5, 89.5, 8.88), 
+->(105, "Shreya", "IT", 75.5,78.5,7.20);
 Query OK, 5 rows affected (0.07 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 
@@ -34,7 +39,8 @@ mysql> SELECT * FROM STUDENT;
 |        105 | Shreya | IT         |  75.5 |  78.5 |  7.2 |
 +------------+--------+------------+-------+-------+------+
 5 rows in set (0.00 sec)
-mysql> CREATE TABLE HOSTEL_DETAILS(Std_id int primary key, Stud_name varchar(20), Block varchar(10), Roomno int);
+mysql> CREATE TABLE HOSTEL_DETAILS(Std_id int primary key,
+->Stud_name varchar(20), Block varchar(10), Roomno int);
 Query OK, 0 rows affected (0.04 sec)
 
 mysql> DESC HOSTEL_DETAILS;
