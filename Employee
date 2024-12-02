@@ -4,35 +4,57 @@ Query OK, 1 row affected (0.0111 sec)
 mysql> USE Employee;
 Database changed
 
-mysql> CREATE TABLE Emp(Emp_id varchar(5) primary key,Emp_name varchar(20),Street_no int,City varchar(20),unique(City));
+mysql> CREATE TABLE emp (
+-> emp_id varchar(10) PRIMARY KEY,
+-> emp_name varchar(10) NOT NULL,
+-> city varchar(10),
+-> CHECK (emp_id LIKE ’E%’));
 Query OK, 0 rows affected (0.03 sec)
 
-mysql> CREATE TABLE Works(Emp_id varchar(5),Company_name varchar(20),Salary float(8),foreign key(Emp_id) references Emp(Emp_id),unique(Company_name));
+mysql> CREATE TABLE works(
+-> emp_id varchar(10),
+-> company_name varchar(20),
+-> salary int,
+-> PRIMARY KEY(emp_id,company_name),
+-> FOREIGN KEY (emp_id) REFERENCES emp(emp_id));
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> CREATE TABLE Company(Company_name varchar(20),City varchar(20),foreign key(Company_name) references Works(Company_name),foreign key(City) references Emp(City));
+mysql> CREATE TABLE company(
+-> company_name varchar(20) PRIMARY KEY,
+-> city varchar(10));
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> CREATE TABLE Manages(Emp_id varchar(5),Manager_id varchar(5) ,foreign key(Manager_id) references Emp(Emp_id));
-Query OK, 0 rows affected (0.03 sec)
+mysql> CREATE TABLE manages (
+-> emp_id varchar(10),
+-> manager_id varchar(10),
+-> PRIMARY KEY (emp_id,manager_id),
+-> FOREIGN KEY (emp_id) REFERENCES emp(emp_id),
+-> FOREIGN KEY (manager_id) REFERENCES emp(emp_id));
+Query OK, 0 rows affected (0.05 sec)
 
-mysql> ALTER TABLE Emp MODIFY COLUMN Emp_name varchar(20) NOT NULL;
+
+mysql> ALTER TABLE emp MODIFY COLUMN emp_name varchar(10) NOT NULL;
 Query OK, 0 rows affected (0.05 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 
-mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E001', 'Amit Sharma', 123, 'Mumbai');
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES 
+->('E001', 'Amit Sharma', 123, 'Mumbai');
 Query OK, 1 row affected (0.01 sec)
 
-mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E002', 'Priya Patel', 456, 'Delhi');
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES 
+->('E002', 'Priya Patel', 456, 'Delhi');
 Query OK, 1 row affected (0.00 sec)
 
-mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E003', 'Raj Kumar', 789, 'Bangalore');
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES 
+->('E003', 'Raj Kumar', 789, 'Bangalore');
 Query OK, 1 row affected (0.01 sec)
 
-mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E004', 'Sneha Reddy', 101, 'Chennai');
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES
+->('E004', 'Sneha Reddy', 101, 'Chennai');
 Query OK, 1 row affected (0.00 sec)
 
-mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES ('E005', 'Vikram Singh', 202, 'Hyderabad');
+mysql> INSERT INTO Emp (Emp_id, Emp_name, Street_no, City) VALUES 
+->('E005', 'Vikram Singh', 202, 'Hyderabad');
 Query OK, 1 row affected (0.00 sec)
 
 
@@ -49,7 +71,8 @@ mysql> SELECT * FROM Emp;
 5 rows in set (0.00 sec)
 
 
-mysql> INSERT INTO Works (Emp_id, Company_name, Salary) VALUES ('E001', 'State Bank of India', 75000);
+mysql> INSERT INTO Works (Emp_id, Company_name, Salary) VALUES
+->('E001', 'State Bank of India', 75000);
 Query OK, 1 row affected (0.01 sec)
 
 mysql> INSERT INTO Works (Emp_id, Company_name, Salary) VALUES ('E002', 'ICICI Bank', 70000);
@@ -143,3 +166,10 @@ mysql> SELECT Emp.Emp_name FROM Emp JOIN Works ON Emp.Emp_id = Works.Emp_id JOIN
 mysql> SELECT Em.Emp_name AS Employee,M.Emp_name AS Manager FROM Emp Em JOIN Manages Mg ON Em.Emp_id=Mg.Emp_id JOIN Emp M ON Mg.Manager_id=M.Emp_id WHERE Em.City=M.City AND Em.Street_no=M.Street_no;
 Empty set (0.02 sec)
 
+mysql> UPDATE works w JOIN
+-> (SELECT m.emp_id FROM manages m JOIN works w ON m.emp_id = w.emp_id
+-> WHERE w.company_name = ’SBI’)
+-> AS managers ON w.emp_id = managers.emp_id
+-> SET w.salary = w.salary * 1.10;
+Query OK, 4 rows affected (0.01 sec)
+Rows matched: 4 Changed: 4 Warnings: 0
