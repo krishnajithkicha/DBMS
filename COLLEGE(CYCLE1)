@@ -54,7 +54,10 @@ mysql> DESC HOSTEL_DETAILS;
 +-----------+-------------+------+-----+---------+-------+
 4 rows in set (0.01 sec)
 
-mysql>  INSERT INTO HOSTEL_DETAILS(Std_id, Stud_name, Block, Roomno) VALUES (201, "Arya", "A",101), (202, "Brinda", "B", 108), (203, "Roma", "E", 105), (204, "Shrinda", "C",102), (205, "Hasiya", "D", 105);
+mysql>  INSERT INTO HOSTEL_DETAILS(Std_id, Stud_name, Block, Roomno) VALUES 
+->(201, "Arya", "A",101), (202, "Brinda", "B", 108),
+->(203, "Roma", "E", 105), (204, "Shrinda", "C",102), 
+->(205, "Hasiya", "D", 105);
 Query OK, 5 rows affected (0.01 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 
