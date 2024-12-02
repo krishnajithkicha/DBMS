@@ -6,10 +6,14 @@ Database changed
 mysql> CREATE TABLE Faculty(Faculty_code int primary key,Faculty_name varchar(20));
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> CREATE TABLE Subject(Subject_code int primary key,Subject_Name varchar(20),Maxmarks float(5,2),Faculty_code int,Foreign key (Faculty_code) references Faculty(Faculty_code));
+mysql> CREATE TABLE Subject(Subject_code int primary key,Subject_Name varchar(20),
+->Maxmarks float(5,2),Faculty_code int,
+->Foreign key (Faculty_code) references Faculty(Faculty_code));
 Query OK, 0 rows affected, 1 warning (0.03 sec)
 
-mysql> CREATE TABLE Student(Student_code int primary key,Student_name varchar(20),DOB date,Student_branch varchar(30),Admission_date date);
+mysql> CREATE TABLE Student(Student_code int primary key,
+->Student_name varchar(20),DOB date,Student_branch varchar(30),
+->Admission_date date);
 Query OK, 0 rows affected (0.02 sec)
 
 mysql> INSERT INTO Faculty (Faculty_code, Faculty_name) VALUES(1, 'Dr. Meera Menon'),(2, 'Prof. Rajesh Patel'),(3, 'Dr. Anita Gupta'),(4, 'Prof. Suresh Kumar'),(5, 'Dr. Latha Iyer');
@@ -91,7 +95,8 @@ mysql> SELECT COUNT(DISTINCT Student_branch) FROM Student;
 +--------------------------------+
 1 row in set (0.00 sec)
 
-mysql> SELECT Faculty_name,Subject_name FROM Faculty,Subject WHERE Faculty.Faculty_code=Subject.Faculty_code;
+mysql> SELECT Faculty_name,Subject_name FROM Faculty,Subject 
+->WHERE Faculty.Faculty_code=Subject.Faculty_code;
 +--------------------+------------------+
 | Faculty_name       | Subject_name     |
 +--------------------+------------------+
@@ -103,7 +108,9 @@ mysql> SELECT Faculty_name,Subject_name FROM Faculty,Subject WHERE Faculty.Facul
 +--------------------+------------------+
 5 rows in set (0.00 sec)
 
-mysql> SELECT Faculty.Faculty_name FROM Faculty,Subject WHERE Faculty. Faculty_code IN(SELECT Faculty_code FROM Subject GROUP BY Faculty_code HAVING COUNT(Subject_code)>1);
+mysql> SELECT Faculty.Faculty_name FROM Faculty,Subject WHERE 
+->Faculty. Faculty_code IN(SELECT Faculty_code FROM Subject 
+->GROUP BY Faculty_code HAVING COUNT(Subject_code)>1);
 Empty set (0.00 sec)
 
 mysql> SELECT Subject_name,Maxmarks FROM Subject ORDER BY Maxmarks ASC;
