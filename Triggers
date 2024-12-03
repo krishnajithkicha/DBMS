@@ -12,7 +12,8 @@ Query OK, 0 rows affected (0.03 sec)
 mysql> CREATE TABLE Prizes(Prize_id int primary key,Money float(10,2),Event_id int,FOREIGN KEY (Event_id) REFERENCES Event(Event_id),Ranks int,Years year);
 Query OK, 0 rows affected, 1 warning (0.02 sec)
 
-mysql> CREATE TABLE Winners(Prize_id int,FOREIGN KEY (Prize_id) REFERENCES Prizes(Prize_id),Player_id int,FOREIGN KEY (Player_id) REFERENCES Participant(Player_id));
+mysql> CREATE TABLE Winners(Prize_id int,FOREIGN KEY (Prize_id) REFERENCES Prizes(Prize_id),Player_id int,FOREIGN KEY (Player_id) REFERENCES 
+Participant(Player_id));
 Query OK, 0 rows affected (0.03 sec)
 
 mysql> CREATE TRIGGER after_event_insert
