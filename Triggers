@@ -6,7 +6,8 @@ Database changed
 mysql> CREATE TABLE Event(Event_id int primary key,Name varchar(50),Description TEXT,City varchar(50));
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> CREATE TABLE Participant(Player_id int primary key,PName varchar(20),Event_id int,FOREIGN KEY (Event_id) REFERENCES Event(Event_id),Gender char(1),Years year);
+mysql> CREATE TABLE Participant(Player_id int primary key,PName varchar(20),Event_id int,
+FOREIGN KEY (Event_id) REFERENCES Event(Event_id),Gender char(1),Years year);
 Query OK, 0 rows affected (0.03 sec)
 
 mysql> CREATE TABLE Prizes(Prize_id int primary key,Money float(10,2),Event_id int,FOREIGN KEY (Event_id) REFERENCES Event(Event_id),Ranks int,Years year);
